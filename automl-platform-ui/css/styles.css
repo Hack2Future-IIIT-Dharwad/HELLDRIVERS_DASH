@@ -92,7 +92,7 @@ h2 {
 body {
     font-family: Arial, sans-serif;
     /*background-image: url('/Users/arnavangarkar/Desktop/Arnav/Hack/automl_background_image.png'); /* Add your background image */
-    background-image: url('automl-platform-ui/automl_background_image.png'); /* Add your background image */
+    background-image: url('automl_background_image.png'); /* Add your background image */
     background-size: cover;
     background-position: center;
     margin: 0;
