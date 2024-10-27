@@ -1,13 +1,19 @@
 import h2o,mlflow,pandas,argparse,json
-from h2o.automl import H2OAutoML
+from h2o.automl import H2OAutoML, get_leaderboard
 from mlflow.tracking import MlflowClient
 import mlflow.h2o
 from mlflow.entities import ViewType
-from web import main,side
+import web 
+import sys
+
+
+
 def main2(X,y):
     #initialzing h2o and mlflow
     h2o.init()
+    global client
     client = MlflowClient()
+    
 
     experiment_name = 'automl-platform'
 
@@ -29,28 +35,36 @@ def main2(X,y):
     print(f"Lifecycle_stage: {experiment.lifecycle_stage}")
     print(f"Tracking uri: {mlflow.get_tracking_uri()}")
 
-    main_frame = h2o.import_file(web.main())
+    
+    main_frame = h2o.import_file('hack.csv')    
 
-    target,predictors = X,y
+    target = X
+    y = main_frame.columns
+    predictors = [n for n in main_frame.columns if n not in X]
     main_frame[target] = main_frame[target].asfactor()
+    # ...
 
+    print("Starting AutoML")
     # Wrap autoML training with MLflow
     with mlflow.start_run():
         aml = H2OAutoML(
-                        max_models=13, # Run AutoML for n base models
-                        seed=42, 
-                        balance_classes=True, # Target classes imbalanced, so set this as True
+                        seed=1,  
                         sort_metric='logloss', # Sort models by logloss (metric for multi-classification)
                         verbosity='info', # Turn on verbose info
-                        exclude_algos = ['GLM', 'DRF'], # Specify algorithms to exclude
+                        max_runtime_secs = 600,
+                        exclude_algos = ['GLM', 'DRF'],
                     )
-        
+    
+    print("AutoML training started")
     # Initiate AutoML training
-    aml.train(x=predictors, y=target, training_frame=main_frame)
-
+    aml.train(predictors,target, training_frame=main_frame)
+    print("AutoML training completed")
     # Set metrics to log
-    mlflow.log_metric("log_loss", aml.leader.logloss())
-    mlflow.log_metric("AUC", aml.leader.auc())
+    if aml.leader is not None:
+        mlflow.log_metric("log_loss", aml.leader.logloss())
+        mlflow.log_metric("AUC", aml.leader.auc())
+    else:
+        print("No leader model found. Cannot log metrics.")
 
     # Log and save best model (mlflow.h2o provides API for logging & loading H2O models)
     mlflow.h2o.log_model(aml.leader, artifact_path="model")
@@ -81,6 +95,3 @@ def predict(X):
     # Convert to pandas series
     y_pred = preds_frame
     return y_pred
-
-
-
