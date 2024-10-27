@@ -1,0 +1,28 @@
+# Core dependencies
+requests
+tabulate
+matplotlib
+h2o
+mlflow
+fastapi
+pandas
+streamlit
+python-multipart
+uvicorn
+future
+protobuf
+prefect
+
+# Additional frontend and API dependencies - Will be Used in when doing on your local
+flask  # If needed for frontend-server communication
+jinja2  # For HTML templating, 
+
+# Streamlit and Visualization
+streamlit-aggrid  # To enhance Streamlit with data tables
+streamlit-option-menu  # For custom Streamlit menus
+
+# Optional utilities
+scipy  # Useful for scientific computations
+numpy  # Fundamental for numerical calculations
+plotly  # For interactive visualizations
+pillow  # For image handling
