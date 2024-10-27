@@ -6,15 +6,23 @@ import requests
 import pandas as pd
 import pandas as pd
 import automl
+import secrets
 
 
+def generate_random_key():
+    return secrets.token_hex(8)
+const1 = generate_random_key()
+const2 = generate_random_key()
+const3 = generate_random_key()
+const4 = generate_random_key()
+const5 = generate_random_key()
 
 def main():
+    
     
     st.title("Data Importer")
 
     st.subheader("Select Data Source")
-
     source = st.selectbox("Choose a data source", ["Upload CSV", "Upload JSON", "Upload YAML", "Enter API URL"])
     global data_placeholder 
     data_placeholder = st.empty()
@@ -57,11 +65,11 @@ def main():
             data_placeholder.write(data)
     global csv_data
     if data is not None:
-        
         csv_data = pd.DataFrame(data)
         side()
         prediction()
-    return csv_data.to_csv(index=False)
+        csv_data.to_csv('hack.csv')
+    return 0
 
 
 
@@ -69,27 +77,23 @@ def side():
     df = csv_data
     target_variable = df.columns
     target_variable2 = df.columns
-    with st.form("target_form"):
-        st.title("Choose the Target Variables")
-        st.selectbox("Select the target variable",target_variable)
-        st.selectbox("Select the prediction variable",target_variable2)
-        global X
-        X = None
-        X = df[target_variable]
-        global y
-        y = None
-        y = df[target_variable2]
-        if st.form_submit_button("Train"):
-            print("callling traing")
-            automl.main2(X,y)
-        return X, y
+    st.title("Choose the Target Variables")
+    global X
+    X = st.selectbox("Select the target variable",target_variable, key = const2 )
+    print(X)
+    global y
+    y = None
+    
+    if st.button("Train", key = const4):
+        print("calling training")
+        automl.main2(X,y)
+    return X, y
 
 def prediction():
     prediction = None
     X_pred = None
-    st.title("Prediction")
     with st.form("prediction_form"):
-        X_pred = st.text_input("Enter the input data to predict")
+        X_pred = st.text_input("Enter the input data to predict", key = const5)
         if st.form_submit_button("Make Prediction"):
             with st.spinner('Prediction in Progress. Please Wait...'):
                 prediction = automl.predict(X_pred)
@@ -97,11 +101,3 @@ def prediction():
             if prediction != None:
                 st.write("The predicted value is", prediction)
     
-
-
-
-
-if __name__ == "__main__":
-    main()
-    side()
-    prediction()
