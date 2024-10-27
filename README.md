@@ -4,7 +4,7 @@
 
 Our AutoML-MLOps platform empowers users to build, train, and deploy AI-ML models effortlessly, eliminating the need for extensive coding. This user-centric platform features automated data preprocessing, model hyperparameter optimization, real-time performance tracking, and an integrated community for model sharing. Designed to simplify and streamline the end-to-end ML workflow, users can seamlessly scale and host models on our cloud infrastructure, accessing them via API.
 
-[Visit the Deployed Platform](https://helldriversautoml.netlify.app/)
+[Visit the Deployed Platform](https://helldriversautoml.netlify.app/) as it is deployed on [Arnav's Repo](https://github.com/ArnavBallinCode/automl-platform-ui)
 
 ## Key Features
 
