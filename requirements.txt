@@ -1,0 +1,19 @@
+# To ensure app dependencies are ported from your virtual environment/host machine into your container, run 'pip freeze > requirements.txt' in the terminal to overwrite this file
+requests
+tabulate
+matplotlib
+h2o
+mlflow
+fastapi
+pandas
+requests
+streamlit
+python-multipart
+uvicorn
+tabulate
+future
+protobuf
+prefect
+transformers
+sentence_transformers
+
