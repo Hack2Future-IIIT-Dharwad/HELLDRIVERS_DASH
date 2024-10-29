@@ -8,7 +8,7 @@ import sys
 
 
 
-def main2(X,y):
+def main2(X,y): 
     #initialzing h2o and mlflow
     h2o.init()
     global client
@@ -95,6 +95,7 @@ def predict(link):
     # Convert to pandas series
     y_pred = preds_frame.as_data_frame()['predict']
     return y_pred
+    
 def predict2(link):
     h2o.init()
     # Load best model (AutoML leader)
@@ -106,4 +107,7 @@ def predict2(link):
     y_pred = preds_frame.as_data_frame()['predict']
     print(y_pred)
     return y_pred
+
+
+
 
